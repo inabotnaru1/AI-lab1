@@ -21,7 +21,7 @@ and Regression Trees.
 The root will receive the entire data set with attributes. Now each node will ask a true false question about one of the features and in response to this question, we split, or partition,
 the data into two subsets. These subsets then become the input to two child nodes we add to the tree. And the goal of the question is to “unmix” the labels (to produce the purest possible distribution of the labels at each node). 
 <br>
-Next it is possible to quantify the amount of uncertainty at a single node using a metric called <b> Gini<b>.
+Next it is possible to quantify the amount of uncertainty at a single node using a metric called <b> Gini</b>.
 And we can quantify how much a question reduces that uncertainty using a concept called information gain which is basically the amount of information gained about a random variable or signal from observing another random variable.
 
 In code I represent a question by storing a column number and a column value, or the threshold it will use to partition the data.
@@ -43,49 +43,48 @@ In code I represent a question by storing a column number and a column value, or
         if is_numeric(self.value):
             condition = ">="
         return "Is %s %s %s?" % (
-            columns[self.column], condition, str(self.value)) ```
-            
-
+            columns[self.column], condition, str(self.value)) 
 ```
-  rom __future__ import print_function
-from rules import rules, columns
-from helper import *
-from nodes import *
+```
+  from __future__ import print_function
+  from rules import rules, columns
+  from helper import *
+  from nodes import *
 
 
-def build_tree(rows):
-    gain, question = find_best_split(rows)
+  def build_tree(rows):
+      gain, question = find_best_split(rows)
 
-    if gain == 0:
-        return Leaf(rows)
+      if gain == 0:
+          return Leaf(rows)
 
-    true_rows, false_rows = partition(rows, question)
+      true_rows, false_rows = partition(rows, question)
 
-    true_branch = build_tree(true_rows)
-    false_branch = build_tree(false_rows)
+      true_branch = build_tree(true_rows)
+      false_branch = build_tree(false_rows)
 
-    return Decision_Node(question, true_branch, false_branch)
+      return Decision_Node(question, true_branch, false_branch)
 
 
-def predict_answer(node):
+  def predict_answer(node):
 
-    if isinstance(node, Leaf):
-        print( "The system says it's totally a ", next(iter(node.predictions)),'\n')
-        return
+      if isinstance(node, Leaf):
+          print( "The system says it's totally a ", next(iter(node.predictions)),'\n')
+          return
 
-    print(str(node.question))
-    answer = input("$$ ")
+      print(str(node.question))
+      answer = input("$$ ")
 
-    if answer == "true":
-        predict_answer(node.true_branch)
-    elif answer == "false":
-        predict_answer(node.false_branch)
-    else:
-        print("Unvalid answer, try again")
+      if answer == "true":
+          predict_answer(node.true_branch)
+      elif answer == "false":
+          predict_answer(node.false_branch)
+      else:
+          print("Unvalid answer, try again")
 
-data_tree = build_tree(rules)
+  data_tree = build_tree(rules)
 
-print("__________________________________________________________________________\n")
-print("In order to find out the type of tourist, you should answer some questions:")
-print("__________________________________________________________________________\n")
-predict_answer(data_tree) ```
+  print("__________________________________________________________________________\n")
+  print("In order to find out the type of tourist, you should answer some questions:")
+  print("__________________________________________________________________________\n")
+  predict_answer(data_tree) ```
