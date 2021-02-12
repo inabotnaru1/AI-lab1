@@ -40,3 +40,4 @@ print("_________________________________________________________________________
 print("In order to find out the type of tourist, you should answer some questions:")
 print("__________________________________________________________________________\n")
 predict_answer(data_tree)
+
